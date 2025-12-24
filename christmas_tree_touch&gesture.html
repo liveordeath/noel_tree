@@ -454,6 +454,9 @@
             setTimeout(() => loader.remove(), 800);
 
             animate();
+            
+            // Tự động bật gesture khi trang load
+            await initMediaPipe();
         }
 // <!--
 //   - @Project: Grand Luxury Tree - Christmas Edition (Touch & Gesture & Stats)
