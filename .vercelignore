@@ -1,0 +1,7 @@
+*.HEIC
+*.heic
+.DS_Store
+node_modules
+.git
+.gitignore
+
