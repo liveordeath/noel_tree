@@ -12,6 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Christmas Tree 3D - Interactive 3D Christmas Tree with Gesture Control</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
+    
     <!-- SEO Meta Tags -->
     <meta name="description" content="Interactive 3D Christmas tree with AI gesture control, photo gallery, and beautiful particle effects. Control with hand gestures or touch!">
     <meta name="keywords" content="christmas tree, 3d, interactive, gesture control, photo gallery, three.js, mediapipe">
@@ -34,6 +37,7 @@
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#d4af37">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Xmas Tree">
@@ -1534,28 +1538,6 @@
             updateSnow();
             updatePhotoGlow(); // Update photo glow effects
             composer.render();
-        }
-        
-        // Update photo glow effect based on focus
-        function updatePhotoGlow() {
-            const photos = particleSystem.filter(p => p.type === 'PHOTO');
-            photos.forEach(p => {
-                if (p.mesh === STATE.focusTarget) {
-                    p.mesh.traverse((child) => {
-                        if (child.isMesh && child.material && child.material.emissive !== undefined) {
-                            child.material.emissive = new THREE.Color(0x443300);
-                            child.material.emissiveIntensity = 0.5;
-                        }
-                    });
-                } else {
-                    p.mesh.traverse((child) => {
-                        if (child.isMesh && child.material && child.material.emissive !== undefined) {
-                            child.material.emissive = new THREE.Color(0x000000);
-                            child.material.emissiveIntensity = 0;
-                        }
-                    });
-                }
-            });
         }
 // <!--
 //   - @Project: Grand Luxury Tree - Christmas Edition (Touch & Gesture & Stats)
