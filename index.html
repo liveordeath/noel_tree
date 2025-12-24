@@ -1235,21 +1235,36 @@
         function updatePhotoGlow() {
             const photos = particleSystem.filter(p => p.type === 'PHOTO');
             photos.forEach(p => {
-                if (p.mesh === STATE.focusTarget) {
-                    p.mesh.traverse((child) => {
-                        if (child.isMesh && child.material) {
-                            child.material.emissive = new THREE.Color(0x443300);
-                            child.material.emissiveIntensity = 0.5;
+                if (!p.mesh) return;
+                
+                p.mesh.traverse((child) => {
+                    if (!child.isMesh || !child.material) return;
+                    
+                    // Only update materials that support emissive (MeshStandardMaterial, MeshPhysicalMaterial)
+                    // Skip MeshBasicMaterial which doesn't have emissive
+                    if (child.material.type === 'MeshBasicMaterial') return;
+                    
+                    // Check if material has emissive property
+                    if (child.material.emissive !== undefined && child.material.emissive !== null) {
+                        try {
+                            if (p.mesh === STATE.focusTarget) {
+                                // Use setHex to avoid creating new Color objects
+                                child.material.emissive.setHex(0x443300);
+                                if (child.material.emissiveIntensity !== undefined) {
+                                    child.material.emissiveIntensity = 0.5;
+                                }
+                            } else {
+                                child.material.emissive.setHex(0x000000);
+                                if (child.material.emissiveIntensity !== undefined) {
+                                    child.material.emissiveIntensity = 0;
+                                }
+                            }
+                        } catch (e) {
+                            // Silently ignore errors with materials
+                            console.warn('Material update error:', e);
                         }
-                    });
-                } else {
-                    p.mesh.traverse((child) => {
-                        if (child.isMesh && child.material) {
-                            child.material.emissive = new THREE.Color(0x000000);
-                            child.material.emissiveIntensity = 0;
-                        }
-                    });
-                }
+                    }
+                });
             });
         }
 
