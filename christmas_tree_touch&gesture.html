@@ -1532,7 +1532,30 @@
             mainGroup.rotation.x = STATE.rotation.x;
             particleSystem.forEach(p => p.update(dt, STATE.mode, STATE.focusTarget));
             updateSnow();
+            updatePhotoGlow(); // Update photo glow effects
             composer.render();
+        }
+        
+        // Update photo glow effect based on focus
+        function updatePhotoGlow() {
+            const photos = particleSystem.filter(p => p.type === 'PHOTO');
+            photos.forEach(p => {
+                if (p.mesh === STATE.focusTarget) {
+                    p.mesh.traverse((child) => {
+                        if (child.isMesh && child.material && child.material.emissive !== undefined) {
+                            child.material.emissive = new THREE.Color(0x443300);
+                            child.material.emissiveIntensity = 0.5;
+                        }
+                    });
+                } else {
+                    p.mesh.traverse((child) => {
+                        if (child.isMesh && child.material && child.material.emissive !== undefined) {
+                            child.material.emissive = new THREE.Color(0x000000);
+                            child.material.emissiveIntensity = 0;
+                        }
+                    });
+                }
+            });
         }
 // <!--
 //   - @Project: Grand Luxury Tree - Christmas Edition (Touch & Gesture & Stats)
